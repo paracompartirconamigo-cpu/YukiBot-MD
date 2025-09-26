@@ -68,7 +68,7 @@ premiumTime: 0,
 banned: false,
 bannedReason: "",
 commands: 0,
-afk: 0,
+afk: -1,
 afkReason: "",
 warn: 0
 }
