@@ -31,7 +31,7 @@ user.afkReason = ''
 const quoted = m.quoted ? await m.quoted.sender : null
 const jids = [...new Set([...(await m.mentionedJid || []), ...(quoted ? [quoted] : [])])]
 for (const jid of jids) {
-const target = global.db.data.chats[m.chat].users[jid]
+const target = global.db.data.users[jid]
 if (!target || typeof target.afk !== 'number' || target.afk < 0) continue
 const ms = Date.now() - target.afk
 const tiempo = formatTiempo(ms)
