@@ -127,8 +127,7 @@ if (typeof nuevo === "string" && nuevo.trim() && nuevo !== actual) {
 user.name = nuevo
 }} catch {}
 const chat = global.db.data.chats[m.chat]
-const conn = m.conn || global.conn
-const setting = global.db.data.settings[conn?.user?.jid]
+const setting = global.db.data.settings[this.user.jid]
   
 const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
 const isOwner = isROwner || m.fromMe
