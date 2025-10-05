@@ -62,7 +62,6 @@ let chat = global.db.data.chats[m.chat]
 if (typeof chat !== 'object' || chat === null) {
 chat = global.db.data.chats[m.chat] = {}
 }
-if (!("users" in chat)) chat.users = {}
 if (!("isBanned" in chat)) chat.isBanned = false
 if (!("isMute" in chat)) chat.isMute = false
 if (!("welcome" in chat)) chat.welcome = false
@@ -229,13 +228,13 @@ if (isAccept) { global.db.data.users[m.sender].commands = (global.db.data.users[
 if (chat) {
 const botId = this.user.jid
 const primaryBotId = chat.primaryBot
-if (name !== "group-banchat.js" && chat?.isBanned && !isMods) {
+if (name !== "group-banchat.js" && chat?.isBanned && !isROwner) {
 if (!primaryBotId || primaryBotId === botId) {
-const aviso = `ꕥ El bot *${setting.botname}* está desactivado en este grupo\n\n> ✦ Un *administrador* puede activarlo con el comando:\n> » *${usedPrefix}bot on*`
+const aviso = `ꕥ El bot *${botname}* está desactivado en este grupo\n\n> ✦ Un *administrador* puede activarlo con el comando:\n> » *${usedPrefix}bot on*`.trim()
 await m.reply(aviso)
 return
 }}
-if (m.text && user.banned && !isMods) {
+if (m.text && user.banned && !isROwner) {
 const mensaje = `ꕥ Estas baneado/a, no puedes usar comandos en este bot!\n\n> ● *Razón ›* ${user.bannedReason}\n\n> ● Si este Bot es cuenta oficial y tienes evidencia que respalde que este mensaje es un error, puedes exponer tu caso con un moderador.`.trim()
 if (!primaryBotId || primaryBotId === botId) {
 m.reply(mensaje)
@@ -351,4 +350,5 @@ let file = global.__filename(import.meta.url, true)
 watchFile(file, async () => {
 unwatchFile(file)
 console.log(chalk.magenta("Se actualizo 'handler.js'"))
+if (global.reloadHandler) console.log(await global.reloadHandler())
 })
