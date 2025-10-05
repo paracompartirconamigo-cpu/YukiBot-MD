@@ -71,7 +71,6 @@ if (!("detect" in chat)) chat.detect = true
 if (!("primaryBot" in chat)) chat.primaryBot = null
 if (!("modoadmin" in chat)) chat.modoadmin = false
 if (!("antiLink" in chat)) chat.antiLink = true
-if (!("antiLinks" in chat)) chat.antiLinks = false
 if (!("nsfw" in chat)) chat.nsfw = false
 if (!("economy" in chat)) chat.economy = true
 if (!("gacha" in chat)) chat.gacha = true
