@@ -131,6 +131,7 @@ gponly: false
 }}} catch (e) {
 console.error(e)
 }
+ 
 if (typeof m.text !== "string") m.text = ""
 const user = global.db.data.users[m.sender]
 try {
@@ -140,16 +141,13 @@ if (typeof nuevo === "string" && nuevo.trim() && nuevo !== actual) {
 user.name = nuevo
 }} catch {}
 const chat = global.db.data.chats[m.chat]
-const settings = global.db.data.settings[this.user.jid]
-  
+const settings = global.db.data.settings[this.user.jid]  
 const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
 const isOwner = isROwner || m.fromMe
 const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender) || user.premium == true
-
-if (opts["nyimak"])  return
-if (!m.fromMe && !isROwner && settings.self) return
-if (!m.fromMe && !isROwner && settings.gponly && !m.chat.endsWith("g.us") && !/code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/gim.test(m.text)) return
-if (opts["swonly"] && m.chat !== "status@broadcast") return
+const isOwners = [this.user.jid, ...global.owner.map((number) => number + "@s.whatsapp.net")].includes(m.sender);
+if (settings.self && !isOwners) return
+if (settings.gponly && !isOwners && !m.chat.endsWith('g.us') && !/code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/gim.test(m.text)) return
 if (opts["queque"] && m.text && !(isPrems)) {
 const queque = this.msgqueque, time = 1000 * 5
 const previousID = queque[queque.length - 1]
