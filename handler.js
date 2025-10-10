@@ -7,7 +7,6 @@ import chalk from "chalk"
 import fetch from "node-fetch"
 import ws from "ws"
 
-const { proto } = (await import("@whiskeysockets/baileys")).default
 const isNumber = x => typeof x === "number" && !isNaN(x)
 const delay = ms => isNumber(ms) && new Promise(resolve => setTimeout(function () {
 clearTimeout(this)
@@ -28,12 +27,10 @@ m = smsg(this, m) || m
 if (!m) return
 m.exp = 0
 try {
-if (!global.db) global.db = {}
-if (!global.db.data) global.db.data = {}
-if (!global.db.data.users) global.db.data.users = {}
-let user = global.db.data.users[m.sender]
-if (typeof user !== "object" || user === null)
-user = global.db.data.users[m.sender] = {}
+const user = global.db.data.users[m.sender]
+if (typeof user !== "object") {
+global.db.data.users[m.sender] = {}
+}
 if (user) {
 if (!("name" in user)) user.name = m.name
 if (!("exp" in user) || !isNumber(user.exp)) user.exp = 0
@@ -75,10 +72,10 @@ afk: -1,
 afkReason: "",
 warn: 0
 }
-if (!global.db.data.chats) global.db.data.chats = {}
-let chat = global.db.data.chats[m.chat]
-if (typeof chat !== "object" || chat === null)
-chat = global.db.data.chats[m.chat] = {}
+const chat = global.db.data.chats[m.chat]
+if (typeof chat !== "object") {
+global.db.data.chats[m.chat] = {}
+}
 if (chat) {
 if (!("isBanned" in chat)) chat.isBanned = false
 if (!("isMute" in chat)) chat.isMute = false;
@@ -106,10 +103,10 @@ nsfw: false,
 economy: true,
 gacha: true
 }
-if (!global.db.data.settings) global.db.data.settings = {}
-let settings = global.db.data.settings[this.user.jid]
-if (typeof settings !== "object" || settings === null)
-settings = global.db.data.settings[this.user.jid] = {}
+const settings = global.db.data.settings[this.user.jid]
+if (typeof settings !== "object") {
+global.db.data.settings[this.user.jid] = {}
+}
 if (settings) {
 if (!("self" in settings)) settings.self = false
 if (!("restrict" in settings)) settings.restrict = true
