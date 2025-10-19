@@ -6,8 +6,8 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 return conn.reply(m.chat, `ꕥ Prefijo actualizado con éxito. Prefijo ➩ ${text}`, m)
 };
 
-handler.help = ['prefix'].map(v => v + ' [prefix]');
+handler.help = ['prefix'];
 handler.command = ['prefix'];
-handler.owner = true;
+handler.tags = ['owner'];
 
 export default handler;
