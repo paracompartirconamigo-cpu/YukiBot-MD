@@ -11,12 +11,7 @@ global.botNumber = "" //Ejemplo: 573218138672
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.owner = [
-"573196588149",
-"5492916450307",
-"5216671548329"
-]
-
+global.owner = ["573196588149", "5492916450307", "5216671548329"]
 global.suittag = ["573196588149"] 
 global.prems = []
 
@@ -55,7 +50,7 @@ ch1: "120363401404146384@newsletter"
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.APIs = {
-xyro: { url: "https://xyro.site", key: null },
+xyro: { url: "https://api.xyro.site", key: null },
 yupra: { url: "https://api.yupra.my.id", key: null },
 vreden: { url: "https://api.vreden.web.id", key: null },
 delirius: { url: "https://api.delirius.store", key: null },
