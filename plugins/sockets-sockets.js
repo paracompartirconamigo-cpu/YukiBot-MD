@@ -9,10 +9,10 @@ try {
 const isSubBots = [conn.user.jid, ...global.owner.map(([number]) => `${number}@s.whatsapp.net`)].includes(m.sender)
 if (!isSubBots) return m.reply(`❀ El comando *${command}* solo puede ser ejecutado por el Socket.`)
 switch (command) {
-case 'self': case 'public': case 'antiprivado': case 'antiprivate': case 'gponly': case 'sologp': {
+case 'self': case 'public': {
 const config = global.db.data.settings[conn.user.jid]
 const value = text ? text.trim().toLowerCase() : ''
-const type = /self|public/.test(command) ? 'self' : /antiprivado|antiprivate/.test(command) ? 'antiPrivate' : /gponly|sologp/.test(command) ? 'gponly' : null
+const type = /self|public/.test(command) ? 'self' : null
 if (!type) return m.reply(`ꕥ Modo no reconocido.`)
 const isEnable = config[type] || false
 const enable = value === 'enable' || value === 'on'
@@ -83,8 +83,8 @@ await m.react('✖️')
 conn.reply(m.chat, `⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${error.message || error}`, m)
 }}
 
-handler.command = ['self', 'public', 'antiprivate', 'gponly', 'sologp', 'join', 'salir', 'leave', 'logout', 'reload']
-handler.help = ['self', 'public', 'antiprivate', 'gponly', 'sologp', 'join', 'salir', 'leave', 'logout', 'reload']
+handler.command = ['self', 'public', 'join', 'salir', 'leave', 'logout', 'reload']
+handler.help = ['self', 'public', 'join', 'salir', 'leave', 'logout', 'reload']
 handler.tags = ['socket']
 
 export default handler
