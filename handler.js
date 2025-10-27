@@ -7,6 +7,7 @@ import chalk from "chalk"
 import fetch from "node-fetch"
 import ws from "ws"
 
+const { proto } = (await import("@whiskeysockets/baileys")).default
 const isNumber = x => typeof x === "number" && !isNaN(x)
 const delay = ms => isNumber(ms) && new Promise(resolve => setTimeout(function () {
 clearTimeout(this)
@@ -16,21 +17,24 @@ resolve()
 export async function handler(chatUpdate) {
 this.msgqueque = this.msgqueque || []
 this.uptime = this.uptime || Date.now()
-if (!chatUpdate) return
+if (!chatUpdate) {
+return
+}
 this.pushMessage(chatUpdate.messages).catch(console.error)
 let m = chatUpdate.messages[chatUpdate.messages.length - 1]
-if (!m) return
-if (global.db.data == null)
-await global.loadDatabase()
+if (!m) {
+return
+}
+if (global.db.data == null) await global.loadDatabase()
 try {
 m = smsg(this, m) || m
-if (!m) return
+if (!m) {
+return
+}
 m.exp = 0
 try {
 const user = global.db.data.users[m.sender]
-if (typeof user !== "object") {
-global.db.data.users[m.sender] = {}
-}
+if (typeof user !== "object") global.db.data.users[m.sender] = {}
 if (user) {
 if (!("name" in user)) user.name = m.name
 if (!("exp" in user) || !isNumber(user.exp)) user.exp = 0
@@ -73,9 +77,7 @@ afkReason: "",
 warn: 0
 }
 const chat = global.db.data.chats[m.chat]
-if (typeof chat !== "object") {
-global.db.data.chats[m.chat] = {}
-}
+if (typeof chat !== "object") global.db.data.chats[m.chat] = {}
 if (chat) {
 if (!("isBanned" in chat)) chat.isBanned = false
 if (!("isMute" in chat)) chat.isMute = false;
@@ -104,21 +106,13 @@ economy: true,
 gacha: true
 }
 const settings = global.db.data.settings[this.user.jid]
-if (typeof settings !== "object") {
-global.db.data.settings[this.user.jid] = {}
-}
+if (typeof settings !== "object") global.db.data.settings[this.user.jid] = {}
 if (settings) {
 if (!("self" in settings)) settings.self = false
-if (!("restrict" in settings)) settings.restrict = true
 if (!("jadibotmd" in settings)) settings.jadibotmd = true
-if (!("antiPrivate" in settings)) settings.antiPrivate = false
-if (!("gponly" in settings)) settings.gponly = false
 } else global.db.data.settings[this.user.jid] = {
 self: false,
-restrict: true,
-jadibotmd: true,
-antiPrivate: false,
-gponly: false
+jadibotmd: true
 }} catch (e) {
 console.error(e)
 }
@@ -136,8 +130,6 @@ const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[
 const isOwner = isROwner || m.fromMe
 const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender) || user.premium == true
 const isOwners = [this.user.jid, ...global.owner.map((number) => number + "@s.whatsapp.net")].includes(m.sender)
-if (settings.self && !isOwners) return
-if (settings.gponly && !isOwners && !m.chat.endsWith('g.us') && !/code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/gim.test(m.text)) return
 if (opts["queque"] && m.text && !(isPrems)) {
 const queque = this.msgqueque, time = 1000 * 5
 const previousID = queque[queque.length - 1]
@@ -236,10 +228,10 @@ cmd.test(command) : cmd === command) :
 typeof plugin.command === "string" ?
 plugin.command === command : false
 global.comando = command
-                        
+
+if (!isOwners && settings.self) return
 if ((m.id.startsWith("NJX-") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
-  
-// Primary by: Alex 🐼
+
 if (global.db.data.chats[m.chat].primaryBot && global.db.data.chats[m.chat].primaryBot !== this.user.jid) {
 const primaryBotConn = global.conns.find(conn => conn.user.jid === global.db.data.chats[m.chat].primaryBot && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED)
 const participants = m.isGroup ? (await this.groupMetadata(m.chat).catch(() => ({ participants: [] }))).participants : []
@@ -269,6 +261,7 @@ if (!primaryBotId || primaryBotId === botId) {
 m.reply(mensaje)
 return
 }}}
+if (!isOwners && !m.chat.endsWith('g.us') && !/code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/gim.test(m.text)) return
 const adminMode = chat.modoadmin || false
 const wa = plugin.botAdmin || plugin.admin || plugin.group || plugin || noPrefix || pluginPrefix || m.text.slice(0, 1) === pluginPrefix || plugin.command
 if (adminMode && !isOwner && m.isGroup && !isAdmin && wa) return
